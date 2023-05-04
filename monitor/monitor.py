@@ -248,8 +248,11 @@ def checkService():
 
     # print(status)
     msg = writeStatus(status, operation_status, disk_status)
-    # emailsubject
+    # email subject
     email_subject = "Operation: " + operation_status
+    if config.has_option("GENERAL", "vmname"):
+        email_subject += " | " + config["GENERAL"]["vmname"]
+        
     if status["checkDisk"]:
         email_subject += " | Disk: " + disk_status
 
