@@ -66,6 +66,11 @@ FINAL_MOM_DIR = os.path.join(PRODUCT_DIR, config.get("products_dir", "FINAL"))
 WATERSHED_DIR = os.path.join(BASE_DIR, "watershed_shp")
 WATERSHED_SHP = os.path.join(WATERSHED_DIR, "Watershed_pfaf_id.shp")
 
+# github repo
+GITHUB_PUSH = config.getboolean("github", "GITHUB_PUSH")
+GITHUB_DIR = os.path.expanduser(config.get("github", "GITHUB_DIR"))
+DAYS_TO_PUSH = config.getint("github", "DAYS_TO_PUSH")
+
 # setup logging
 # generate a new log for each month
 todays_date = date.today()
