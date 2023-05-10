@@ -48,7 +48,7 @@ def github_publisher():
             continue
         else:
             os.system("cp {} {}".format(os.path.join(settings.FINAL_MOM_DIR,csvfile), csv_dir))
-            os.system("git add {}".format(os.path.join(settings.GIS_DIR,csvfile)))
+            os.system("git add {}".format(os.path.join(settings.CSV_DIR,csvfile)))
             file_counter += 1
     
     if file_counter > 0:
