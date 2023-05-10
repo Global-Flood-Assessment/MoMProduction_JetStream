@@ -107,10 +107,19 @@ def github_publisher():
             for newfile in newfile_list:
                 os.system("git add {}".format(os.path.join(settings.GIS_DIR,newfile)))
                 file_counter += 1
-    print("csv_to_remove", csv_to_remove)
     if len(csv_to_remove) > 0:
         # remove files
-        pass
+        for csvfile in csv_to_remove:
+            # git rm csv file
+            os.system("git rm {}".format(os.path.join(settings.CSV_DIR,csvfile)))
+            file_counter += 1
+            # remove geojson files
+            adate = csvfile.split("_")[2][:10]
+            for acond in ["Warning", "Watch"]:
+                geojsonfile = "{}_{}.geojson".format(adate,acond)
+                if os.path.exists(os.path.join(gis_dir,geojsonfile)):
+                    os.system("git rm {}".format(os.path.join(settings.GIS_DIR,geojsonfile)))
+                    file_counter += 1
     else:
         print("no file to remove")
 
