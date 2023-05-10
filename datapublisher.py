@@ -51,6 +51,13 @@ def github_publisher():
             os.system("git add {}".format(os.path.join(settings.CSV_DIR,csvfile)))
             file_counter += 1
     
+    # geojson output
+    # Final_Attributes_2023051006HWRF+MOM+DFO+VIIRSUpdated_PDC.csv
+    # 2023051006_Warning.geojson
+    # 2023051006_Watch.geojson
+    # check geojson files
+    
+    # push to github
     if file_counter > 0:
         os.system("git commit -m \"update data\"")
         os.system("git push origin main")
