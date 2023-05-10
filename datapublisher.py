@@ -56,7 +56,18 @@ def github_publisher():
     # 2023051006_Warning.geojson
     # 2023051006_Watch.geojson
     # check geojson files
-    
+    for csvfile in file_list:
+        adate = csvfile.split("_")[2][:10]
+        warning_file = "{}_Warning.geojson".format(adate)
+        warning_file = os.path.join(gis_dir,warning_file)
+        watch_file = "{}_Watch.geojson".format(adate)
+        watch_file = os.path.join(gis_dir,watch_file)
+
+        if os.path.exists(warning_file) and os.path.exists(watch_file):
+            continue
+        else:
+            generate_geojson(csvfile)
+
     # push to github
     if file_counter > 0:
         os.system("git commit -m \"update data\"")
