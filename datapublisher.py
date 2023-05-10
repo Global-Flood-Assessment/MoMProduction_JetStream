@@ -25,8 +25,8 @@ def github_publisher():
     files_to_push = days_to_push * 4
 
     # get the file names
-    flie_list = get_latestitems(settings.FINAL_MOM_DIR, numofitems=files_to_push)
-    print(flie_list)
+    file_list = get_latestitems(settings.FINAL_MOM_DIR, numofitems=files_to_push)
+    print(file_list)
 
     # switch working directory
     os.chdir(settings.GITHUB_DIR)
@@ -35,11 +35,23 @@ def github_publisher():
     csv_dir = os.path.join(settings.GITHUB_DIR ,settings.CSV_DIR)
     if not os.path.exists(csv_dir):
         os.makedirs(csv_dir)
-        os.system("git add {}".format(settings.CSV_DIR))
-        os.system("git commit -m \"add csv dir\"")
-        os.system("git push origin master")
-    
 
+    gis_dir = os.path.join(settings.GITHUB_DIR ,settings.GIS_DIR)   
+    if not os.path.exists(gis_dir):
+        os.makedirs(gis_dir)
+    
+    # copy files to github repo
+    for csvfile in file_list:    
+        # check if file exists first
+        if os.path.exists(os.path.join(csv_dir,csvfile)):
+            continue
+        else:
+            os.system("cp {} {}".format(os.path.join(settings.FINAL_MOM_DIR,csvfile), csv_dir))
+            os.system("git add {}".format(os.path.join(settings.GIS_DIR,csvfile)))
+            os.system("git commit -am \"update data\"")
+            os.system("git push origin master")
+            print("data published")
+            
 def publish():
     """publish data"""
 
