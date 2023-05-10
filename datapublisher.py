@@ -107,13 +107,13 @@ def github_publisher():
             for newfile in newfile_list:
                 os.system("git add {}".format(os.path.join(settings.GIS_DIR,newfile)))
                 file_counter += 1
-
+    print("csv_to_remove", csv_to_remove)
     if len(csv_to_remove) > 0:
         # remove files
         pass
     else:
         print("no file to remove")
-        
+
     # push to github
     if file_counter > 0:
         os.system("git commit -m \"update data\"")
