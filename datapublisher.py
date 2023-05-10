@@ -41,6 +41,7 @@ def github_publisher():
         os.makedirs(gis_dir)
     
     # copy files to github repo
+    file_counter = 0
     for csvfile in file_list:    
         # check if file exists first
         if os.path.exists(os.path.join(csv_dir,csvfile)):
@@ -48,10 +49,16 @@ def github_publisher():
         else:
             os.system("cp {} {}".format(os.path.join(settings.FINAL_MOM_DIR,csvfile), csv_dir))
             os.system("git add {}".format(os.path.join(settings.GIS_DIR,csvfile)))
-            os.system("git commit -am \"update data\"")
-            os.system("git push origin master")
-            print("data published")
-            
+            file_counter += 1
+    
+    if file_counter > 0:
+        os.system("git commit -m \"update data\"")
+        os.system("git push origin master")
+        print("data published")
+    else:
+        print("no new data to publish")    
+
+
 def publish():
     """publish data"""
 
