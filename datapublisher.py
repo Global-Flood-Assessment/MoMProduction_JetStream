@@ -107,6 +107,8 @@ def github_publisher():
             for newfile in newfile_list:
                 os.system("git add {}".format(os.path.join(settings.GIS_DIR,newfile)))
                 file_counter += 1
+    
+    # remove old files
     if len(csv_to_remove) > 0:
         # remove files
         for csvfile in csv_to_remove:
@@ -125,8 +127,12 @@ def github_publisher():
         print("no file to remove")
 
     # push to github
+    the_latest_file = file_list[-1]
+    the_latest_date = the_latest_file.split("_")[2][:10]
+    print("the latest date:", the_latest_date)
+
     if file_counter > 0:
-        os.system("git commit -m \"update data\"")
+        os.system("git commit -m \"update: {}\"".format(the_latest_date))
         os.system("git push origin main")
         print("data published")
     else:
