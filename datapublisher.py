@@ -118,6 +118,7 @@ def github_publisher():
             for acond in ["Warning", "Watch"]:
                 geojsonfile = "{}_{}.geojson".format(adate,acond)
                 if os.path.exists(os.path.join(gis_dir,geojsonfile)):
+                    print("remove:", os.path.join(settings.GIS_DIR,geojsonfile))
                     os.system("git rm {}".format(os.path.join(settings.GIS_DIR,geojsonfile)))
                     file_counter += 1
     else:
