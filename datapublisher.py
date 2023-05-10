@@ -53,7 +53,7 @@ def github_publisher():
     
     if file_counter > 0:
         os.system("git commit -m \"update data\"")
-        os.system("git push origin master")
+        os.system("git push origin main")
         print("data published")
     else:
         print("no new data to publish")    
