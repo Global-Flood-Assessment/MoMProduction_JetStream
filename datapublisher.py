@@ -57,9 +57,13 @@ def github_publisher():
     days_to_push = settings.DAYS_TO_PUSH
     files_to_push = days_to_push * 4
 
-    # get the file names
+    # get the file names for the latest items
     file_list = get_latestitems(settings.FINAL_MOM_DIR, numofitems=files_to_push)
-    print(file_list)
+
+    # any file to remove?
+    csv_in_github = os.listdir(os.path.join(settings.GITHUB_DIR, settings.CSV_DIR))
+    csv_to_remove = [x for x in csv_in_github if x not in file_list]
+
 
     # switch working directory
     os.chdir(settings.GITHUB_DIR)
@@ -104,6 +108,12 @@ def github_publisher():
                 os.system("git add {}".format(os.path.join(settings.GIS_DIR,newfile)))
                 file_counter += 1
 
+    if len(csv_to_remove) > 0:
+        # remove files
+        pass
+    else:
+        print("no file to remove")
+        
     # push to github
     if file_counter > 0:
         os.system("git commit -m \"update data\"")
