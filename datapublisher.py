@@ -28,6 +28,18 @@ def github_publisher():
     flie_list = get_latestitems(settings.FINAL_MOM_DIR, numofitems=files_to_push)
     print(flie_list)
 
+    # switch working directory
+    os.chdir(settings.GITHUB_DIR)
+
+    # create dir if not exist
+    csv_dir = os.path.join(settings.GITHUB_DIR ,settings.CSV_DIR)
+    if not os.path.exists(csv_dir):
+        os.makedirs(csv_dir)
+        os.system("git add {}".format(settings.CSV_DIR))
+        os.system("git commit -m \"add csv dir\"")
+        os.system("git push origin master")
+    
+
 def publish():
     """publish data"""
 

@@ -70,6 +70,8 @@ WATERSHED_SHP = os.path.join(WATERSHED_DIR, "Watershed_pfaf_id.shp")
 GITHUB_PUSH = config.getboolean("github", "GITHUB_PUSH")
 GITHUB_DIR = os.path.expanduser(config.get("github", "GITHUB_DIR"))
 DAYS_TO_PUSH = config.getint("github", "DAYS_TO_PUSH")
+CSV_DIR = config.get("github", "CSV_DIR")
+GIS_DIR = config.get("github", "GIS_DIR")
 
 # setup logging
 # generate a new log for each month
