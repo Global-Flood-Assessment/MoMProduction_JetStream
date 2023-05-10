@@ -6,10 +6,43 @@
 
 import os
 import sys
+import geopandas as gpd
+import pandas as pd
 
 import settings
-from utilities import get_latestitems
+from utilities import get_latestitems, watersheds_gdb_reader
 
+def generate_geojson (momoutput, adate, outputdir):
+    """generate geojson file from mom output, return list of geojson files
+        -- momoutput: csv file in csv dir with pfaf_id
+        -- adate: datestr
+        -- outputdir: output directory
+    """
+    
+    idfield = "pfaf_id"
+    # list alert types
+    alist = ["Warning", "Watch"]
+
+    # load csv file
+    df = pd.read_csv(momoutput, encoding="ISO-8859-1")
+    # force id as int
+    df[idfield] = df[idfield].astype(int)
+    # drop duplicates
+    df = df.drop_duplicates(subset=[idfield])
+
+    # load watersheds
+    watersheds = watersheds_gdb_reader()
+    geojson_list = []
+    for acond in alist:
+        n_df = df[df["Alert"] == acond]
+        out_df = watersheds.loc[n_df[idfield]]
+        out_df = out_df.merge(n_df, left_on=idfield, right_on=idfield)
+        # write warning result to geojson
+        outputfile = f"{adate}_{acond}.geojson"
+        geojson_list.append(outputfile)
+        out_df.to_file(os.path.join(outputdir, outputfile), index=False, driver="GeoJSON")
+
+    return geojson_list
 
 def git_push_onefile():
     """push one file to github"""
@@ -66,7 +99,10 @@ def github_publisher():
         if os.path.exists(warning_file) and os.path.exists(watch_file):
             continue
         else:
-            generate_geojson(csvfile)
+            newfile_list = generate_geojson(os.path.join(csv_dir,csvfile), adate, gis_dir)
+            for newfile in newfile_list:
+                os.system("git add {}".format(os.path.join(settings.GIS_DIR,newfile)))
+                file_counter += 1
 
     # push to github
     if file_counter > 0:
