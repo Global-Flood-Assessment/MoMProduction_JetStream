@@ -22,7 +22,7 @@ from utilities import (
     hwrf_today,
     read_data,
 )
-
+from datapublisher import github_publisher
 
 def mofunc_hwrf(row):
     if row["Severity"] > 0.8 or row["Hazard_Score"] > 80:
@@ -1247,7 +1247,8 @@ def hwrf_workflow(adate):
     update_HWRF_MoM(adate)
     update_HWRFMoM_DFO_VIIRS(adate)
     final_alert_pdc(adate)
-
+    # update github
+    github_publisher()
 
 def batchrun_HWRF_MoM():
     """run hwrf in batch mode"""
