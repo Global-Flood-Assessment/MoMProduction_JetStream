@@ -143,11 +143,6 @@ def publish():
     """publish data"""
 
     github_publisher()
-    # print("publishing data")
-    # os.system("git add .")
-    # os.system("git commit -m \"update data\"")
-    # os.system("git push origin master")
-    # print("data published")
 
 def main():
     """main function"""
