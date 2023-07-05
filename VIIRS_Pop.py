@@ -182,9 +182,12 @@ def count_impact_pop(wastershed_id: int, floodimages: List, working_dir: str) ->
 
     tempcount_list = []
     for countimage in popcountimage_list:
-        src = rasterio.open(countimage)
-        data = src.read(1)
-        impact_popcount = int(np.sum(data, where=(data != src.nodata)))
+        try:
+            src = rasterio.open(countimage)
+            data = src.read(1)
+            impact_popcount = int(np.sum(data, where=(data != src.nodata)))
+        except rasterio.errors.RasterioIOError:
+            impact_popcount = -100
         tempcount_list.append(impact_popcount)
     finalcount = max(tempcount_list)
 
@@ -331,36 +334,25 @@ def run_viirs_pop(adate: str):
         return
 
     # for debug
-    print(matching[0])
-    sys.exit()
+    hwrf_adate = matching[0]
+    VIIRS_pop(hwrfoutput=hwrf_adate)
 
 
 def main():
     """test code"""
+
+    # test another day
     # testhwrf = os.path.join(
     #     settings.HWRF_MOM_DIR,
-    #     "Final_Attributes_2022122606HWRF+20221225DFO+20221225VIIRSUpdated.csv",
+    #     "Final_Attributes_2023040706HWRF+20230406DFO+20230406VIIRSUpdated.csv",
     # )
     # VIIRS_pop(hwrfoutput=testhwrf)
 
-    # # test another day
-    # testhwrf = os.path.join(
-    #     settings.HWRF_MOM_DIR,
-    #     "Final_Attributes_2022122618HWRF+20221225DFO+20221225VIIRSUpdated.csv",
-    # )
-    # VIIRS_pop(hwrfoutput=testhwrf)
-    # # test another day
-    # testhwrf = os.path.join(
-    #     settings.HWRF_MOM_DIR,
-    #     "Final_Attributes_2022122706HWRF+20221226DFO+20221225VIIRSUpdated.csv",
-    # )
-    # VIIRS_pop(hwrfoutput=testhwrf)
-    # test another day
-    testhwrf = os.path.join(
-        settings.HWRF_MOM_DIR,
-        "Final_Attributes_2023040706HWRF+20230406DFO+20230406VIIRSUpdated.csv",
-    )
-    VIIRS_pop(hwrfoutput=testhwrf)
+    adate = "2023070512"
+    run_viirs_pop(adate)
+
+    adate = "2023070506"
+    run_viirs_pop(adate)
 
 
 if __name__ == "__main__":
