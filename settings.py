@@ -84,6 +84,8 @@ GITHUB_DIR = os.path.expanduser(config.get("github", "GITHUB_DIR"))
 DAYS_TO_PUSH = config.getint("github", "DAYS_TO_PUSH")
 CSV_DIR = config.get("github", "CSV_DIR")
 GIS_DIR = config.get("github", "GIS_DIR")
+POP_DIR = config.get("github", "POP_DIR")
+
 
 # setup logging
 # generate a new log for each month
