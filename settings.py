@@ -68,6 +68,10 @@ FINAL_MOM_DIR = os.path.join(PRODUCT_DIR, config.get("products_dir", "FINAL"))
 
 # VIIRS pop addon
 POPDATA_DIR = os.path.expanduser(config.get("viirs", "POPDATA_DIR"))
+POP_COUNT_CSV = os.path.join(POPDATA_DIR, config.get("viirs", "POP_COUNT_CSV"))
+POP_IMAGE_DIR = os.path.join(POPDATA_DIR, config.get("viirs", "POP_IMAGE_DIR"))
+MASK_GEOJSON_DIR = os.path.join(POPDATA_DIR, config.get("viirs", "MASK_GEOJSON_DIR"))
+
 POPOUTPUT_DIR = os.path.join(HWRF_DIR, config.get("viirs", "POPOUTPUT_DIR"))
 RUN_VIIRSPOP = config.getboolean("viirs", "RUN_VIIRSPOP")
 if RUN_VIIRSPOP:
