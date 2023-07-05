@@ -54,7 +54,7 @@ def get_impacted_watersheds(hwrfoutput: str) -> List:
     df = df.drop_duplicates(subset=["pfaf_id"])
 
     # find impacted watersheds
-    df = df[(df.Alert == "Warning") & (df.Flag == 3)]
+    df = df[df["Alert"].isin(["Warning", "Watch"]) & (df.Flag == 3)]
 
     impact_list = df["pfaf_id"].values.tolist()
 
