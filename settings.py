@@ -17,6 +17,10 @@ BASE_DATA_DIR = os.path.join(BASE_DIR, "data")
 config = configparser.ConfigParser(allow_no_value=True)
 config.read(os.path.join(BASE_DIR, "production.cfg"))
 
+# config watershed shp file
+WATERSHED_DIR = os.path.join(BASE_DIR, "watershed_shp")
+WATERSHED_SHP = os.path.join(WATERSHED_DIR, "Watershed_pfaf_id.shp")
+
 # config directory
 # base directory for downloading and processing data
 WORKING_DIR = os.path.expanduser(config.get("general", "WORKING_DIR"))
@@ -62,9 +66,13 @@ HWRF_TIME_DELAY = config.getint("hwrf", "HWRF_TIME_DELAY")
 FINAL_MOM = os.path.join(PRODUCT_DIR, config.get("products_dir", "FINAL"))
 FINAL_MOM_DIR = os.path.join(PRODUCT_DIR, config.get("products_dir", "FINAL"))
 
-# config watershed shp file
-WATERSHED_DIR = os.path.join(BASE_DIR, "watershed_shp")
-WATERSHED_SHP = os.path.join(WATERSHED_DIR, "Watershed_pfaf_id.shp")
+# VIIRS pop addon
+POPDATA_DIR = os.path.expanduser(config.get("viirs", "POPDATA_DIR"))
+POPOUTPUT_DIR = os.path.join(HWRF_DIR, config.get("viirs", "POPOUTPUT_DIR"))
+RUN_VIIRSPOP = config.getboolean("viirs", "RUN_VIIRSPOP")
+if RUN_VIIRSPOP:
+    if not os.path.exists(POPOUTPUT_DIR):
+        os.mkdir(POPOUTPUT_DIR)
 
 # github repo
 GITHUB_PUSH = config.getboolean("github", "GITHUB_PUSH")
