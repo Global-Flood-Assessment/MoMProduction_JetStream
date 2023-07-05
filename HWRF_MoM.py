@@ -14,6 +14,7 @@ import pandas as pd
 import scipy.stats
 
 import settings
+from datapublisher import github_publisher
 from utilities import (
     findLatest,
     get_current_processing_datehour,
@@ -22,7 +23,8 @@ from utilities import (
     hwrf_today,
     read_data,
 )
-from datapublisher import github_publisher
+from VIIRS_Pop import run_viirs_pop
+
 
 def mofunc_hwrf(row):
     if row["Severity"] > 0.8 or row["Hazard_Score"] > 80:
@@ -1247,8 +1249,11 @@ def hwrf_workflow(adate):
     update_HWRF_MoM(adate)
     update_HWRFMoM_DFO_VIIRS(adate)
     final_alert_pdc(adate)
+    # run viirs pop
+    run_viirs_pop(adate)
     # update github
     github_publisher()
+
 
 def batchrun_HWRF_MoM():
     """run hwrf in batch mode"""

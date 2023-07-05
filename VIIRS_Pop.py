@@ -37,8 +37,9 @@ from typing import List
 import numpy as np
 import pandas as pd
 import rasterio
-import settings
 from rasterio.mask import mask
+
+import settings
 
 PopCount_header = ["pfaf_id", "Totalpop", "VIIRS_impactpop", "VIIRS_impactpop_percent"]
 
@@ -306,11 +307,32 @@ def VIIRS_pop(hwrfoutput: str):
     popupdated_hwrfoutput = os.path.basename(hwrfoutput).replace(
         "Updated.csv", "_PopUpdated.csv"
     )
-    popupdated_hwrfoutput = os.path.join(settings.HWRF_MOM_DIR, popupdated_hwrfoutput)
+    # pop output
+    popupdated_hwrfoutput = os.path.join(settings.POPOUTPUT_DIR, popupdated_hwrfoutput)
     mergedhwrf_df.to_csv(popupdated_hwrfoutput)
 
     # remove temp directory
     shutil.rmtree(temp_dir)
+
+
+def run_viirs_pop(adate: str):
+    """run viirs pop at a given date"""
+
+    # firt check if run is enabled
+    if not settings.RUN_VIIRSPOP:
+        return
+
+    hwrfh_list = glob.glob(os.path.join(settings.HWRF_MOM_DIR, "Final*.csv"))
+    # Final_Attributes_2021102800HWRF+20211028DFO+20211027VIIRSUpdated.csv
+    matching = [s for s in hwrfh_list if adate + "HWRF+" in s]
+
+    # if not found just return
+    if len(matching) < 1:
+        return
+
+    # for debug
+    print(matching[0])
+    sys.exit()
 
 
 def main():
@@ -339,6 +361,7 @@ def main():
         "Final_Attributes_2023040706HWRF+20230406DFO+20230406VIIRSUpdated.csv",
     )
     VIIRS_pop(hwrfoutput=testhwrf)
+
 
 if __name__ == "__main__":
     main()
