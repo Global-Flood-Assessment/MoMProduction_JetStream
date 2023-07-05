@@ -16,7 +16,7 @@ if not os.path.exists("production.cfg"):
     print("please check the production.cfg, run initilize again.")
     sys.exit()
 
-from settings import *
+from settings import PRODUCT_DIR, WATERSHED_DIR, WATERSHED_SHP, WORKING_DIR, config
 
 
 def create_dir(apath):
@@ -47,6 +47,14 @@ for key in config["products_dir"]:
         for product_sub in product_sub_folders:
             create_dir(os.path.join(subfolder, key.upper() + "_" + product_sub))
 
+# task: check if shp file is unzipped
+if not os.path.exists(WATERSHED_SHP):
+    print("Task: unzip watershed.shp.zip")
+    with ZipFile(WATERSHED_SHP + ".zip", "r") as zipObj:
+        zipObj.extractall(WATERSHED_DIR)
+else:
+    print("Task: watershed shp is already unzipped")
+
 # task: check ftp user/password, key
 user = config.get("glofas", "USER")
 passwd = config.get("glofas", "PASSWD")
@@ -61,13 +69,5 @@ if "?" in dfo_token:
     print("Action required: production.cfg")
     print("Please fill in TOKEN in dfo section")
     sys.exit()
-
-# task: check if shp file is unzipped
-if not os.path.exists(WATERSHED_SHP):
-    print("Task: unzip watershed.shp.zip")
-    with ZipFile(WATERSHED_SHP + ".zip", "r") as zipObj:
-        zipObj.extractall(WATERSHED_DIR)
-else:
-    print("Task: watershed shp is already unzipped")
 
 print("System initilization is completed!")
