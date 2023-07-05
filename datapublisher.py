@@ -164,17 +164,16 @@ def viirspop_publisher():
     # get the file names for the latest items
     file_list = get_latestitems(settings.POPOUTPUT_DIR, numofitems=files_to_push)
 
+    csv_dir = os.path.join(settings.GITHUB_DIR, settings.POP_DIR)
+    if not os.path.exists(csv_dir):
+        os.makedirs(csv_dir)
+
     # any file to remove?
     csv_in_github = os.listdir(os.path.join(settings.GITHUB_DIR, settings.POP_DIR))
     csv_to_remove = [x for x in csv_in_github if x not in file_list]
 
     # switch working directory
     os.chdir(settings.GITHUB_DIR)
-
-    # create dir if not exist
-    csv_dir = os.path.join(settings.GITHUB_DIR, settings.POP_DIR)
-    if not os.path.exists(csv_dir):
-        os.makedirs(csv_dir)
 
     # copy files to github repo
     file_counter = 0
